@@ -24,7 +24,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
-import { personas } from "../../../mocks/personas";
+import { personas } from "../../mocks/personas";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -72,23 +72,28 @@ const headCells: HeadCell[] = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Nombre",
+    label: "Código",
   },
-  { id: "username", numeric: false, disablePadding: false, label: "Cédula" },
+  {
+    id: "username",
+    numeric: false,
+    disablePadding: false,
+    label: "Descripción",
+  },
   {
     id: "email",
     numeric: false,
     disablePadding: false,
-    label: "Tipo Identificacion",
+    label: "Familia",
   },
-  { id: "estado", numeric: false, disablePadding: false, label: "Estado" },
+  { id: "estado", numeric: false, disablePadding: false, label: "Medida" },
   {
     id: "website",
     numeric: false,
     disablePadding: false,
-    label: "Dirección",
+    label: "Unidad",
   },
-  { id: "phone", numeric: false, disablePadding: false, label: "Teléfono" },
+  { id: "phone", numeric: false, disablePadding: false, label: "Tipo" },
 ];
 
 interface EnhancedTableProps {
@@ -251,7 +256,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Tabla() {
+export default function TablaInventario() {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("calories");
