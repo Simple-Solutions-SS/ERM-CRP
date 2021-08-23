@@ -8,6 +8,7 @@ import { personas } from "../../../mocks/personas";
 import { CeldaEncabezado, EncabezadoTabla } from "../../atomos/EncabezadoTabla";
 import { ToolbarTabla } from "../../atomos/ToolbarTabla";
 import { CuerpoTabla } from "../../atomos/CuerpoTabla";
+import { TablaProps } from "../Tabla/Tabla";
 
 type Order = "asc" | "desc";
 
@@ -16,23 +17,35 @@ const headCells: CeldaEncabezado[] = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Nombre",
+    label: "Cuenta",
   },
-  { id: "username", numeric: false, disablePadding: false, label: "Cédula" },
+  {
+    id: "username",
+    numeric: false,
+    disablePadding: false,
+    label: "Uso Restringido",
+  },
   {
     id: "email",
     numeric: false,
     disablePadding: false,
-    label: "Tipo Identificacion",
+    label: "Tipo Detallado",
   },
-  { id: "estado", numeric: false, disablePadding: false, label: "Estado" },
+  { id: "estado", numeric: false, disablePadding: false, label: "Tipo" },
   {
     id: "website",
     numeric: false,
     disablePadding: false,
-    label: "Dirección",
+    label: "Saldo Normal",
   },
-  { id: "phone", numeric: false, disablePadding: false, label: "Teléfono" },
+  { id: "Monto", numeric: false, disablePadding: false, label: "Acepta Datos" },
+  {
+    id: "Monto",
+    numeric: false,
+    disablePadding: false,
+    label: "Tipo de Cambio",
+  },
+  { id: "Monto", numeric: false, disablePadding: false, label: "Conversión" },
 ];
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -61,11 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface TablaProps {
-  titulo?: string;
-}
-
-const Tabla: React.FC<TablaProps> = ({ titulo }) => {
+const TablaCuentas: React.FC<TablaProps> = ({ titulo }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("calories");
@@ -149,4 +158,4 @@ const Tabla: React.FC<TablaProps> = ({ titulo }) => {
   );
 };
 
-export default Tabla;
+export default TablaCuentas;

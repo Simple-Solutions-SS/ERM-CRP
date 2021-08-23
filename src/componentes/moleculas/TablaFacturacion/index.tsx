@@ -8,6 +8,7 @@ import { personas } from "../../../mocks/personas";
 import { CeldaEncabezado, EncabezadoTabla } from "../../atomos/EncabezadoTabla";
 import { ToolbarTabla } from "../../atomos/ToolbarTabla";
 import { CuerpoTabla } from "../../atomos/CuerpoTabla";
+import { TablaProps } from "../Tabla/Tabla";
 
 type Order = "asc" | "desc";
 
@@ -16,9 +17,14 @@ const headCells: CeldaEncabezado[] = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Nombre",
+    label: "Proveedor",
   },
-  { id: "username", numeric: false, disablePadding: false, label: "Cédula" },
+  {
+    id: "username",
+    numeric: false,
+    disablePadding: false,
+    label: "Identificación",
+  },
   {
     id: "email",
     numeric: false,
@@ -30,9 +36,9 @@ const headCells: CeldaEncabezado[] = [
     id: "website",
     numeric: false,
     disablePadding: false,
-    label: "Dirección",
+    label: "Descripción",
   },
-  { id: "phone", numeric: false, disablePadding: false, label: "Teléfono" },
+  { id: "Monto", numeric: false, disablePadding: false, label: "Teléfono" },
 ];
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -61,11 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export interface TablaProps {
-  titulo?: string;
-}
-
-const Tabla: React.FC<TablaProps> = ({ titulo }) => {
+const TablaFacturacion: React.FC<TablaProps> = ({ titulo }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("calories");
@@ -149,4 +151,4 @@ const Tabla: React.FC<TablaProps> = ({ titulo }) => {
   );
 };
 
-export default Tabla;
+export default TablaFacturacion;

@@ -13,19 +13,18 @@ import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
 import {
-  AccountBalance,
-  AccountBalanceWallet,
   AccountBox,
   CreditCard,
   EmojiPeople,
   Home,
   HomeWork,
   LocalShipping,
+  Money,
   Receipt,
   ShoppingCart,
-  SupervisorAccount,
   TrackChanges,
   Work,
+  Event,
 } from "@material-ui/icons";
 
 const drawerWidth = 240;
@@ -100,9 +99,17 @@ const BarraLateral = () => {
         <StyledLink to="/cuentas">
           <ListItem button>
             <ListItemIcon>
+              <Event />
+            </ListItemIcon>
+            <StyledListItemText primary="Catálogo de Cuentas" />
+          </ListItem>
+        </StyledLink>
+        <StyledLink to="/calendario-gastos">
+          <ListItem button>
+            <ListItemIcon>
               <CreditCard />
             </ListItemIcon>
-            <StyledListItemText primary="Cuentas" />
+            <StyledListItemText primary="Calendario Gastos" />
           </ListItem>
         </StyledLink>
         <StyledLink to="/clientes">
@@ -121,12 +128,12 @@ const BarraLateral = () => {
             <StyledListItemText primary="Operaciones" />
           </ListItem>
         </StyledLink>
-        <StyledLink to="/financiamiento">
+        <StyledLink to="/estados-financieros">
           <ListItem button>
             <ListItemIcon>
-              <AccountBalance />
+              <Money />
             </ListItemIcon>
-            <StyledListItemText primary="Financiamiento" />
+            <StyledListItemText primary="Estados Financieros " />
           </ListItem>
         </StyledLink>
         <StyledLink to="/facturacion">

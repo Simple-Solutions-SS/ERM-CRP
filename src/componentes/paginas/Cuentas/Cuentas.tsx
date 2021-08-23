@@ -1,12 +1,12 @@
 import React from "react";
-import Tabla from "../../moleculas/Tabla/Tabla";
+import TablaCuentas from "../../moleculas/TablaCuentas";
 import { AppLayout } from "../../organismos/AppLayout/AppLayout";
 
 const Cuentas = () => {
   return (
     <AppLayout>
       <h1>Cuentas</h1>
-      <Tabla />
+      <TablaCuentas titulo="Catálogo de Cuentas" />
     </AppLayout>
   );
 };

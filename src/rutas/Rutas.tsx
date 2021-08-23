@@ -1,10 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Administracion from "../componentes/paginas/Administracion/Administracion";
+import CalendarioGastos from "../componentes/paginas/CalendarioGastos";
 import Clientes from "../componentes/paginas/Clientes/Clientes";
 import Compras from "../componentes/paginas/Compras/Compras";
 import Cuentas from "../componentes/paginas/Cuentas/Cuentas";
 import DirectorioCuentas from "../componentes/paginas/DirectorioCuentas/DirectorioCuentas";
+import EstadosFinancieros from "../componentes/paginas/EstadosFinancieros";
 import Facturacion from "../componentes/paginas/Facturacion/Facturacion";
 import Financiamiento from "../componentes/paginas/Financiamiento/Financiamiento";
 import Inicio from "../componentes/paginas/Inicio/Inicio";
@@ -28,6 +30,8 @@ export const Rutas = () => {
         <Route path="/planillas" component={Planillas} />
         <Route path="/monitoreo" component={Monitoreo} />
         <Route path="/administracion" component={Administracion} />
+        <Route path="/estados-financieros" component={EstadosFinancieros} />
+        <Route path="/calendario-gastos" component={CalendarioGastos} />
 
         <Route path="/cuentas" component={DirectorioCuentas} />
       </Switch>

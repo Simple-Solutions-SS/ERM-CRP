@@ -6,11 +6,11 @@ import { QUERY_CLIENTES } from "./query";
 
 const Clientes: React.FC = () => {
   const { loading, data, error, refetch, fetchMore } = useQuery(QUERY_CLIENTES);
-  console.log(data);
+
   return (
     <AppLayout>
       <h1>Clientes</h1>
-      <Tabla />
+      <Tabla titulo="Clientes" />
     </AppLayout>
   );
 };
