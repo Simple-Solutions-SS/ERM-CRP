@@ -52,7 +52,7 @@ interface EncabezadoTablaProps {
   order: Order;
   orderBy: string;
   rowCount: number;
-  headCells: CeldaEncabezado[];
+  celdasEncabezado: CeldaEncabezado[];
 }
 
 export function EncabezadoTabla({
@@ -63,7 +63,7 @@ export function EncabezadoTabla({
   numSelected,
   rowCount,
   onRequestSort,
-  headCells,
+  celdasEncabezado,
 }: EncabezadoTablaProps) {
   const createSortHandler =
     (property: string) => (event: React.MouseEvent<unknown>) => {
@@ -81,7 +81,7 @@ export function EncabezadoTabla({
             inputProps={{ "aria-label": "select all desserts" }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {celdasEncabezado.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -8,10 +8,11 @@ import { personas } from "../../../mocks/personas";
 import { CeldaEncabezado, EncabezadoTabla } from "../../atomos/EncabezadoTabla";
 import { ToolbarTabla } from "../../atomos/ToolbarTabla";
 import { CuerpoTabla } from "../../atomos/CuerpoTabla";
+import { capitalize } from "@material-ui/core";
 
 type Order = "asc" | "desc";
 
-const headCells: CeldaEncabezado[] = [
+const celdasEncabezado: CeldaEncabezado[] = [
   {
     id: "name",
     numeric: false,
@@ -63,15 +64,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface TablaProps {
   titulo?: string;
+  datos?: any[];
 }
 
-const Tabla: React.FC<TablaProps> = ({ titulo }) => {
+const Tabla: React.FC<TablaProps> = ({ titulo, datos = [] }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<string>("calories");
+  const [orderBy, setOrderBy] = React.useState<string>("");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const celdasEncabezado = Object.keys(datos[0]).map(key => ({
+    id: key.toLocaleLowerCase(),
+    numeric: false,
+    disablePadding: true,
+    label: capitalize(key),
+  }));
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -121,7 +130,7 @@ const Tabla: React.FC<TablaProps> = ({ titulo }) => {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={personas.length}
-              headCells={headCells}
+              celdasEncabezado={celdasEncabezado}
             />
             <CuerpoTabla
               selected={selected}

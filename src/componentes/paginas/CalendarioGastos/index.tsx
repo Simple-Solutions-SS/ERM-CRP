@@ -6,7 +6,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import TablaCuentas from "../../moleculas/TablaCuentas";
 import { AppLayout } from "../../organismos/AppLayout/AppLayout";
 
 const useStyles = makeStyles((theme: Theme) =>

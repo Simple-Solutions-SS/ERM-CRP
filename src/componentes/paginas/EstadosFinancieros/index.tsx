@@ -5,9 +5,6 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import React from "react";
-import Tabla from "../../moleculas/Tabla/Tabla";
-import TablaFacturacion from "../../moleculas/TablaFacturacion";
 import { AppLayout } from "../../organismos/AppLayout/AppLayout";
 
 const useStyles = makeStyles((theme: Theme) =>

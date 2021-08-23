@@ -1,14 +1,14 @@
-import React from "react";
-import TablaCuentas from "../../moleculas/TablaCuentas";
 import { AppLayout } from "../../organismos/AppLayout/AppLayout";
+import { TablaCatalogoCuentas } from "../../organismos/TablaCatalogoCuentas";
 
 const Cuentas = () => {
   return (
     <AppLayout>
       <h1>Cuentas</h1>
-      <TablaCuentas titulo="Catálogo de Cuentas" />
+      <TablaCatalogoCuentas/>
     </AppLayout>
   );
 };
 
 export default Cuentas;
+

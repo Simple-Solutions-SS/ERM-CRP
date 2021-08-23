@@ -6,7 +6,7 @@ const Administracion = () => {
   return (
     <AppLayout>
       <h1>Administracion</h1>
-      <Tabla />
+      <Tabla titulo="Administración" />
     </AppLayout>
   );
 };
