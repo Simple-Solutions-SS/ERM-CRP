@@ -1,40 +1,16 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { personas } from "../../../mocks/personas";
 import { CeldaEncabezado, EncabezadoTabla } from "../../atomos/EncabezadoTabla";
 import { ToolbarTabla } from "../../atomos/ToolbarTabla";
 import { CuerpoTabla } from "../../atomos/CuerpoTabla";
 import { capitalize } from "@material-ui/core";
+import { EtiquetasCeldas } from "../../organismos/TablaCatalogoCuentas";
 
 type Order = "asc" | "desc";
-
-const celdasEncabezado: CeldaEncabezado[] = [
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "Nombre",
-  },
-  { id: "username", numeric: false, disablePadding: false, label: "Cédula" },
-  {
-    id: "email",
-    numeric: false,
-    disablePadding: false,
-    label: "Tipo Identificacion",
-  },
-  { id: "estado", numeric: false, disablePadding: false, label: "Estado" },
-  {
-    id: "website",
-    numeric: false,
-    disablePadding: false,
-    label: "Dirección",
-  },
-  { id: "phone", numeric: false, disablePadding: false, label: "Teléfono" },
-];
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,9 +41,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export interface TablaProps {
   titulo?: string;
   datos?: any[];
+  campos?: EtiquetasCeldas[];
 }
 
-const Tabla: React.FC<TablaProps> = ({ titulo, datos = [] }) => {
+const Tabla: React.FC<TablaProps> = ({ titulo, datos = [], campos = [] }) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("");
@@ -75,11 +52,11 @@ const Tabla: React.FC<TablaProps> = ({ titulo, datos = [] }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const celdasEncabezado = Object.keys(datos[0]).map(key => ({
-    id: key.toLocaleLowerCase(),
+  const celdasEncabezado = campos.map(({ label, campo }) => ({
+    id: campo.toLocaleLowerCase(),
     numeric: false,
     disablePadding: true,
-    label: capitalize(key),
+    label: capitalize(label),
   }));
 
   const handleRequestSort = (
@@ -93,7 +70,7 @@ const Tabla: React.FC<TablaProps> = ({ titulo, datos = [] }) => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = personas.map((n) => n.name);
+      const newSelecteds = datos.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -129,17 +106,18 @@ const Tabla: React.FC<TablaProps> = ({ titulo, datos = [] }) => {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={personas.length}
+              rowCount={datos.length}
               celdasEncabezado={celdasEncabezado}
             />
             <CuerpoTabla
               selected={selected}
               rowsPerPage={rowsPerPage}
               page={page}
-              data={personas}
+              data={datos}
               setSelected={setSelected}
               order={order}
               orderBy={orderBy}
+              campos={campos}
             />
           </Table>
         </TableContainer>
@@ -147,7 +125,7 @@ const Tabla: React.FC<TablaProps> = ({ titulo, datos = [] }) => {
           labelRowsPerPage="Filas por página"
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={personas.length}
+          count={datos.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

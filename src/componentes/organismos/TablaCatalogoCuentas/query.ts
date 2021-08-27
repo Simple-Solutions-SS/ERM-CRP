@@ -4,12 +4,20 @@ export const QUERY_DIRECTORIO_CUENTAS = gql`
   query FetchAccounts {
     acct_Account {
       AccountName
+      Description
       AccountNumber
+      ClientAccount
       BankName
+      IdCurrency
+      IdStatus
       Note
-      IdAccount
+      IdAccountingType
+      IdFinancialStatement
       Balance
+      IdMasterAccount
+      MasterAccountNumber
       BalanceType
+      UseCostCenter
     }
   }
 `;

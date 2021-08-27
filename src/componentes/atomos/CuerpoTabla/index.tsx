@@ -1,5 +1,6 @@
 import { TableBody, TableRow, TableCell, Checkbox } from "@material-ui/core";
 import React from "react";
+import { EtiquetasCeldas } from "../../organismos/TablaCatalogoCuentas";
 
 type Order = "asc" | "desc";
 
@@ -11,6 +12,7 @@ export interface CuerpoTablaProps {
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
   order: Order;
   orderBy: string;
+  campos: EtiquetasCeldas[];
 }
 
 export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
@@ -21,6 +23,7 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
   setSelected,
   order,
   orderBy,
+  campos,
 }) => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -65,7 +68,10 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
               key={row.name}
               selected={isItemSelected}
             >
-              <TableCell padding="checkbox">
+              {campos.map(({ campo }) => (
+                <TableCell>{row[campo]}</TableCell>
+              ))}
+              {/* <TableCell padding="checkbox">
                 <Checkbox
                   checked={isItemSelected}
                   inputProps={{ "aria-labelledby": labelId }}
@@ -80,7 +86,7 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
               <TableCell align="right">{row.website}</TableCell>
               <TableCell align="right">{row.phone}</TableCell>
               <TableCell align="right">{row.phone}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell>
+              <TableCell align="right">{row.phone}</TableCell> */}
             </TableRow>
           );
         })}
