@@ -3,11 +3,17 @@ import "./App.css";
 import { Rutas } from "./rutas/Rutas";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./styles/theme";
-import { ApolloClient, InMemoryCache, ApolloProvider, HttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+} from "@apollo/client";
+import { ModalProvider } from "./contextos/modal-context";
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'https://selca.hasura.app/v1/graphql',
+    uri: "https://selca.hasura.app/v1/graphql",
     headers: {
       Authorization:
         "Bearer " +
@@ -18,13 +24,15 @@ const client = new ApolloClient({
     },
   }),
   cache: new InMemoryCache(),
-})
+});
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <ApolloProvider client={client}>
-        <Rutas />
-      </ApolloProvider>
+      <ModalProvider>
+        <ApolloProvider client={client}>
+          <Rutas />
+        </ApolloProvider>
+      </ModalProvider>
     </ThemeProvider>
   );
 }

@@ -129,7 +129,7 @@ const Tabla: React.FC<TablaProps> = ({ titulo, datos = [], campos = [] }) => {
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
     </div>

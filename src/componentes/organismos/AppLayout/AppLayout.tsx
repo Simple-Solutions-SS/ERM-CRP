@@ -7,6 +7,7 @@ import {
   Theme,
 } from "@material-ui/core";
 import BarraSuperior from "../../moleculas/BarraSuperior/BarraSuperior";
+import { ModalWrapper } from "../../moleculas/Modal";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,6 +28,7 @@ export const AppLayout: React.FC = ({ children }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
+      <ModalWrapper />
       <CssBaseline />
       <BarraSuperior />
       <BarraLateral />

@@ -3,8 +3,10 @@ import { QUERY_DIRECTORIO_CUENTAS } from "./query";
 import { useQuery } from "@apollo/client";
 import { FetchAccountsQuery } from "../../../generated/graphql";
 import Tabla from "../../moleculas/Tabla/Tabla";
-import { CircularProgress } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import axios from "axios";
+import { useModal } from "../../../contextos/modal-context";
+import { AccountCreationInput } from "../../moleculas/Modal";
 
 export interface EtiquetasCeldas {
   label: string;
@@ -24,6 +26,8 @@ export const TablaCatalogoCuentas: React.FC = () => {
     QUERY_DIRECTORIO_CUENTAS
   );
 
+  const { setOnSubmit, setOpenModal } = useModal();
+
   if (error) {
     console.error(error);
   }
@@ -36,37 +40,36 @@ export const TablaCatalogoCuentas: React.FC = () => {
     return <CircularProgress />;
   }
 
-  const handleButtonClick = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/cuentas",
-        {
-          AccountName: "ADMIN",
-          AccountNumber: "5-55-55-555-000-000",
-          Description: "ESTO ES UNA DESCRIPCIÓN",
-          ClientAccount: "",
-          BankName: "",
-          IdCurrency: 1,
-          IdStatus: 0,
-          Note: "Note",
-          IdUser: 1,
-          IdAccountingType: 0,
-          IdFinancialStatement: 0,
-          Balance: 5000,
-          IdMasterAccount: 0,
-          MasterAccountNumber: "",
-          BalanceType: "",
-          UseCostCenter: 1,
-        },
-        {
-          headers: {},
-        }
-      );
-      refetch();
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+  // async function crearCuenta({
+  //   Note,
+  //   IdCurrency,
+  //   BankName,
+  //   AccountNumber,
+  //   AccountName,
+  //   Description,
+  //   ClientAccount,
+  // }: AccountCreationInput) {
+  //   try {
+  //     const response = await fetch(
+  //       `https://simplesolutionscr.com/webservices/selca/service.php?who=insert_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&AccountName=${AccountName}&Description=${Description}&AccountNumber=${AccountNumber}&ClientAccount=${ClientAccount}&BankName=${BankName}&IdCurrency=${IdCurrency}&Note=${Note}`,
+  //       {
+  //         mode: "no-cors",
+  //         method: "POST", // or 'PUT'
+  //         headers: {
+  //           "Content-Type": "application/x-www-form-urlencoded",
+  //         },
+  //       }
+  //     );
+
+  //     refetch();
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+  const handleButtonClick = () => {
+    // setOnSubmit(crearCuenta);
+    setOpenModal(true);
   };
 
   return (
@@ -78,7 +81,13 @@ export const TablaCatalogoCuentas: React.FC = () => {
             datos={data["acct_Account"]}
             campos={etiquetasCeldas}
           />
-          <button onClick={handleButtonClick}>Agregar Cuenta</button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleButtonClick}
+          >
+            Agregar Cuenta
+          </Button>
         </>
       )}
     </div>

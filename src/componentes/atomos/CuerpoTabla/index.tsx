@@ -65,7 +65,7 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
               role="checkbox"
               aria-checked={isItemSelected}
               tabIndex={-1}
-              key={row.name}
+              key={`${row.name}-${index}`}
               selected={isItemSelected}
             >
               {campos.map(({ campo }) => (
