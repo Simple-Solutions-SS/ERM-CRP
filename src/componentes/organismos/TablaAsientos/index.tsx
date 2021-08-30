@@ -2,7 +2,7 @@ import React from "react";
 import Tabla from "../../moleculas/Tabla/Tabla";
 import { Button, CircularProgress } from "@material-ui/core";
 import { useModal } from "../../../contextos/modal-context";
-import useAccounts from "../../../hooks/useAccounts";
+import useAsientos from "../../../hooks/useAsientos";
 
 export interface EtiquetasCeldas {
   label: string;
@@ -17,10 +17,10 @@ const etiquetasCeldas: EtiquetasCeldas[] = [
   { label: "Balance", campo: "Balance" },
 ];
 
-export const TablaCatalogoCuentas: React.FC = () => {
-  const { loading, data, error, refetch } = useAccounts();
+export const TablaAsientos: React.FC = () => {
+  const { loading, data, error, refetch } = useAsientos();
 
-  const { setOnSubmit, setOpenModal } = useModal();
+  const { setOpenModal } = useModal();
 
   if (error) {
     console.error(error);
@@ -34,7 +34,6 @@ export const TablaCatalogoCuentas: React.FC = () => {
     return <CircularProgress />;
   }
   const handleButtonClick = () => {
-    setOnSubmit(refetch);
     setOpenModal(true);
   };
 

@@ -4,6 +4,7 @@ import LogoSelca from "../../../assets/LogoSelca.png";
 import TipoCambio from "../../../models/TipoCambio";
 import { useEffect, useState } from "react";
 import { getTipoCambio } from "../../../services/tipoCambio";
+import { useTipoCambio } from "../../../contextos/tipoCambio-context";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,22 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 const BarraSuperior = () => {
-  const [tipoCambio, setTipoCambio] = useState<TipoCambio | null>(null);
   const classes = useStyles();
 
-  const getTipoCambioHoy = async () => {
-    try {
-      const fecha = new Date();
-      const tipoCambio = await getTipoCambio(fecha);
-      setTipoCambio(tipoCambio);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  useEffect(() => {
-    getTipoCambioHoy();
-  }, []);
+  const { tipoCambio } = useTipoCambio();
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -50,9 +38,9 @@ const BarraSuperior = () => {
                 width: "200px",
               }}
             >
-              <p>Compra: &#8353;{tipoCambio.compra}</p>
+              <p>Compra: &#8353;{tipoCambio?.compra ?? 0}</p>
 
-              <p>Venta: &#8353;{tipoCambio.venta}</p>
+              <p>Venta: &#8353;{tipoCambio?.venta ?? 0}</p>
             </div>
           )}
         </div>

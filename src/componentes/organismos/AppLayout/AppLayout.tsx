@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import BarraSuperior from "../../moleculas/BarraSuperior/BarraSuperior";
 import { ModalWrapper } from "../../moleculas/Modal";
+import { CustomSnackbar } from "../../moleculas/Snackbar";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,6 +33,7 @@ export const AppLayout: React.FC = ({ children }) => {
       <CssBaseline />
       <BarraSuperior />
       <BarraLateral />
+      <CustomSnackbar />
 
       <main className={classes.content}>{children}</main>
     </div>

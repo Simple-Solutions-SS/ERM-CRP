@@ -1,4 +1,5 @@
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import { FetchAccountsQuery } from "../generated/graphql";
 
 export const QUERY_DIRECTORIO_CUENTAS = gql`
   query FetchAccounts {
@@ -15,9 +16,16 @@ export const QUERY_DIRECTORIO_CUENTAS = gql`
       IdFinancialStatement
       Balance
       IdMasterAccount
-      MasterAccountNumber
       BalanceType
       UseCostCenter
     }
   }
 `;
+
+const useAccounts = () => {
+  const response = useQuery<FetchAccountsQuery>(QUERY_DIRECTORIO_CUENTAS);
+
+  return response;
+};
+
+export default useAccounts;

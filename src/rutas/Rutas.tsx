@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Administracion from "../componentes/paginas/Administracion/Administracion";
+import Asientos from "../componentes/paginas/Asientos";
 import CalendarioGastos from "../componentes/paginas/CalendarioGastos";
 import Clientes from "../componentes/paginas/Clientes/Clientes";
 import Compras from "../componentes/paginas/Compras/Compras";
@@ -26,6 +27,7 @@ export const Rutas = () => {
         <Route path="/operaciones" component={Operaciones} />
         <Route path="/clientes" component={Clientes} />
         <Route path="/cuentas" component={Cuentas} />
+        <Route path="/asientos" component={Asientos} />
         <Route path="/compras" component={Compras} />
         <Route path="/planillas" component={Planillas} />
         <Route path="/monitoreo" component={Monitoreo} />

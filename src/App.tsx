@@ -10,6 +10,8 @@ import {
   HttpLink,
 } from "@apollo/client";
 import { ModalProvider } from "./contextos/modal-context";
+import { TipoCambioProvider } from "./contextos/tipoCambio-context";
+import { SnackbarProvider } from "./contextos/use-snackback";
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -25,14 +27,19 @@ const client = new ApolloClient({
   }),
   cache: new InMemoryCache(),
 });
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <ModalProvider>
-        <ApolloProvider client={client}>
-          <Rutas />
-        </ApolloProvider>
-      </ModalProvider>
+      <TipoCambioProvider>
+        <SnackbarProvider>
+          <ModalProvider>
+            <ApolloProvider client={client}>
+              <Rutas />
+            </ApolloProvider>
+          </ModalProvider>
+        </SnackbarProvider>
+      </TipoCambioProvider>
     </ThemeProvider>
   );
 }

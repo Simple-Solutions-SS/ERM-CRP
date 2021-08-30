@@ -6,7 +6,6 @@ import React, {
   SetStateAction,
 } from "react";
 import { AccountCreationInput } from "../componentes/moleculas/Modal";
-import { Acct_Account } from "../generated/graphql";
 
 interface ModalContextProps {
   openModal: boolean;
@@ -25,6 +24,17 @@ const initialValues: AccountCreationInput = {
   BankName: "",
   IdCurrency: 0,
   Note: "",
+  Balance: 0,
+  BalanceType: 0,
+  IdAccountingType: 0,
+  IdFinancialStatement: 0,
+  IdMasterAccount: 0,
+  IdStatus: 0,
+  UseCostCenter: 0,
+  TypeExchange: 0,
+  IdTypeExchange: 0,
+  IsRestricted: "",
+  IdCreditType: 0,
 };
 
 const ModalContext = createContext<ModalContextProps>({

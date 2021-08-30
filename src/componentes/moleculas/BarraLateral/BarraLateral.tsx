@@ -25,6 +25,7 @@ import {
   TrackChanges,
   Work,
   Event,
+  Notes,
 } from "@material-ui/icons";
 
 const drawerWidth = 240;
@@ -102,6 +103,14 @@ const BarraLateral = () => {
               <Event />
             </ListItemIcon>
             <StyledListItemText primary="Catálogo de Cuentas" />
+          </ListItem>
+        </StyledLink>
+        <StyledLink to="/asientos">
+          <ListItem button>
+            <ListItemIcon>
+              <Notes />
+            </ListItemIcon>
+            <StyledListItemText primary="Asientos" />
           </ListItem>
         </StyledLink>
         <StyledLink to="/calendario-gastos">
