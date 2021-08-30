@@ -1,39 +1,35 @@
 import React from "react";
 import Tabla from "../../moleculas/Tabla/Tabla";
 import { Button, CircularProgress } from "@material-ui/core";
-import { useModal } from "../../../contextos/modal-context";
+import { DataType, useModal } from "../../../contextos/modal-context";
 import useAsientos from "../../../hooks/useAsientos";
-
-export interface EtiquetasCeldas {
-  label: string;
-  campo: string;
-}
+import { EtiquetasCeldas } from "../TablaCatalogoCuentas";
 
 const etiquetasCeldas: EtiquetasCeldas[] = [
-  { label: "Cuenta", campo: "AccountNumber" },
-  { label: "Descripción", campo: "Description" },
-  { label: "Tipo Detallado", campo: "Cuenta" },
-  { label: "Tipo", campo: "BalanceType" },
-  { label: "Balance", campo: "Balance" },
+  { label: "Cuenta Contable", campo: "Account", subCampo: "AccountNumber" },
+  { label: "Descripción", campo: "Account", subCampo: "Description" },
+  { label: "Referencia", campo: "IdReference" },
+  { label: "Débito Colón", campo: "Amount" },
+  { label: "Crédito Colón", campo: "Amount" },
 ];
 
 export const TablaAsientos: React.FC = () => {
-  const { loading, data, error, refetch } = useAsientos();
+  const { loading, data, error } = useAsientos();
 
-  const { setOpenModal } = useModal();
+  const { setOpenModal, setDataType, setOperacion } = useModal();
 
   if (error) {
     console.error(error);
-  }
-
-  if (error) {
     return <p>Ooops, datos no disponibles en este momento.</p>;
   }
 
   if (loading) {
     return <CircularProgress />;
   }
+
   const handleButtonClick = () => {
+    setDataType(DataType.Asientos);
+    setOperacion("Crear");
     setOpenModal(true);
   };
 
@@ -42,9 +38,10 @@ export const TablaAsientos: React.FC = () => {
       {data && (
         <>
           <Tabla
-            titulo="Catálogo de Cuentas"
-            datos={data["acct_Account"]}
+            titulo="Asientos"
+            datos={data["acct_JournalEntry"]}
             campos={etiquetasCeldas}
+            onAgregar={handleButtonClick}
           />
           <Button
             variant="contained"

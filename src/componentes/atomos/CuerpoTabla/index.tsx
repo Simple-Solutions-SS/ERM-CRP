@@ -1,5 +1,14 @@
-import { TableBody, TableRow, TableCell, Checkbox } from "@material-ui/core";
+import {
+  TableBody,
+  TableRow,
+  TableCell,
+  Checkbox,
+  Tooltip,
+  IconButton,
+} from "@material-ui/core";
+import { Edit } from "@material-ui/icons";
 import React from "react";
+import { DataType, useModal } from "../../../contextos/modal-context";
 import { EtiquetasCeldas } from "../../organismos/TablaCatalogoCuentas";
 
 type Order = "asc" | "desc";
@@ -28,6 +37,9 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
+  const { setSelectedItem, setOperacion, setOpenModal, setDataType } =
+    useModal();
+
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   const handleClick = (_: React.MouseEvent<unknown>, name: string) => {
@@ -50,9 +62,16 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
     setSelected(newSelected);
   };
 
+  const handleEditClick = (item: any) => {
+    setSelectedItem(item);
+    setOperacion("Editar");
+    setDataType(DataType.Cuentas);
+    setOpenModal(true);
+  };
+
   return (
     <TableBody>
-      {stableSort(data, getComparator(order, orderBy))
+      {data
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((row, index) => {
           const isItemSelected = isSelected(row.name as string);
@@ -68,25 +87,21 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
               key={`${row.name}-${index}`}
               selected={isItemSelected}
             >
-              {campos.map(({ campo }) => (
-                <TableCell>{row[campo]}</TableCell>
+              {campos.map(({ campo, subCampo }) => (
+                <TableCell>
+                  {subCampo ? row[campo][subCampo] : row[campo]}
+                </TableCell>
               ))}
-              {/* <TableCell padding="checkbox">
-                <Checkbox
-                  checked={isItemSelected}
-                  inputProps={{ "aria-labelledby": labelId }}
-                />
+              <TableCell>
+                <Tooltip title="Editar fila">
+                  <IconButton
+                    onClick={() => handleEditClick(row)}
+                    aria-label="editar"
+                  >
+                    <Edit />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
-              <TableCell component="th" id={labelId} scope="row" padding="none">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.id}</TableCell>
-              <TableCell align="right">{row.username}</TableCell>
-              <TableCell align="right">{row.website}</TableCell>
-              <TableCell align="right">{row.website}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell>
-              <TableCell align="right">{row.phone}</TableCell> */}
             </TableRow>
           );
         })}
@@ -98,35 +113,3 @@ export const CuerpoTabla: React.FC<CuerpoTablaProps> = ({
     </TableBody>
   );
 };
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
-) => number {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}

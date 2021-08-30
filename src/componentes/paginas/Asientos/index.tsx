@@ -4,7 +4,7 @@ import { TablaAsientos } from "../../organismos/TablaAsientos";
 const Asientos = () => {
   return (
     <AppLayout>
-      <h1>Cuentas</h1>
+      <h1>Asientos</h1>
       <TablaAsientos />
     </AppLayout>
   );

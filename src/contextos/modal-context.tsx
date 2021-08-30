@@ -5,18 +5,27 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
-import { AccountCreationInput } from "../componentes/moleculas/Modal";
+import { AsientoCreationInput } from "../componentes/moleculas/FormularioAsientos";
+import { AccountCreationInput } from "../componentes/moleculas/FormularioCuenta";
+import { Acct_Account, Acct_JournalEntry } from "../generated/graphql";
 
 interface ModalContextProps {
   openModal: boolean;
-  initialValue: AccountCreationInput;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
-  setInitialValue: Dispatch<React.SetStateAction<AccountCreationInput>>;
   onSubmit: Function | null;
   setOnSubmit: React.Dispatch<React.SetStateAction<Function | null>>;
+  dataType: DataType;
+  setDataType: React.Dispatch<React.SetStateAction<DataType>>;
+  getDefaultValues: () => DefaultValues;
+  operacion: Operation;
+  setOperacion: React.Dispatch<React.SetStateAction<Operation>>;
+  selectedItem: Acct_Account | Acct_JournalEntry | null;
+  setSelectedItem: React.Dispatch<React.SetStateAction<Item>>;
 }
 
-const initialValues: AccountCreationInput = {
+type DefaultValues = AccountCreationInput | AsientoCreationInput | null;
+
+const cuentaInitialValue: AccountCreationInput = {
   AccountName: "",
   Description: "",
   AccountNumber: "",
@@ -37,28 +46,59 @@ const initialValues: AccountCreationInput = {
   IdCreditType: 0,
 };
 
+export enum DataType {
+  "Cuentas",
+  "Asientos",
+}
+
+export type Operation = "Crear" | "Editar";
+export type Item = Acct_Account | Acct_JournalEntry | null;
+
 const ModalContext = createContext<ModalContextProps>({
   openModal: false,
-  initialValue: initialValues,
   setOpenModal: () => {},
-  setInitialValue: () => {},
   onSubmit: null,
   setOnSubmit: () => {},
+  dataType: DataType.Cuentas,
+  setDataType: () => {},
+  getDefaultValues: () => null,
+  operacion: "Crear",
+  setOperacion: () => {},
+  selectedItem: null,
+  setSelectedItem: () => {},
 });
 
 export const ModalProvider: React.FC = ({ children }) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [initialValue, setInitialValue] =
-    useState<AccountCreationInput>(initialValues);
+
   const [onSubmit, setOnSubmit] = useState<Function | null>(null);
+  const [dataType, setDataType] = useState<DataType>(DataType.Cuentas);
+  const [operacion, setOperacion] = useState<Operation>("Crear");
+  const [selectedItem, setSelectedItem] = useState<Item>(null);
+
+  const getDefaultValues = (): DefaultValues => {
+    switch (dataType) {
+      case DataType.Cuentas:
+        return cuentaInitialValue;
+      case DataType.Asientos:
+        return null;
+      default:
+        return null;
+    }
+  };
 
   const val: ModalContextProps = {
     openModal,
     setOpenModal,
-    initialValue,
-    setInitialValue,
     onSubmit,
     setOnSubmit,
+    dataType,
+    setDataType,
+    getDefaultValues,
+    operacion,
+    setOperacion,
+    selectedItem,
+    setSelectedItem,
   };
   return <ModalContext.Provider value={val}>{children}</ModalContext.Provider>;
 };

@@ -4,20 +4,36 @@ import { FetchAccountsQuery } from "../generated/graphql";
 export const QUERY_DIRECTORIO_CUENTAS = gql`
   query FetchAccounts {
     acct_Account {
-      AccountName
-      Description
+      IdAccount
       AccountNumber
-      ClientAccount
-      BankName
+      Description
+      IsRestricted
+      AccountingType {
+        Name
+        IdAccountingType
+      }
+      FinancialStatement {
+        Name
+        IdFinancialStatement
+      }
+      IdCreditType
       IdCurrency
       IdStatus
+      IdTypeExchange
       Note
-      IdAccountingType
-      IdFinancialStatement
-      Balance
-      IdMasterAccount
-      BalanceType
+      TypeExchange {
+        Name
+        IdTypeExchange
+      }
       UseCostCenter
+      IdFinancialStatement
+      IdAccountingType
+      IdMasterAccount
+      Balance
+      BalanceType
+      BankName
+      ClientAccount
+      AccountName
     }
   }
 `;

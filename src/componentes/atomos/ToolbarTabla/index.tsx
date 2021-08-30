@@ -7,20 +7,29 @@ import {
   Theme,
   createStyles,
   lighten,
+  Button,
 } from "@material-ui/core";
-import { Delete, FilterList } from "@material-ui/icons";
+import { Add } from "@material-ui/icons";
 import clsx from "clsx";
 
 export interface ToolbarTablaProps {
   numSelected: number;
   titulo?: string;
+  idSelected?: number;
+  onAgregar?: Function;
 }
 
 export const ToolbarTabla = ({
   numSelected,
   titulo = "",
+  idSelected,
+  onAgregar,
 }: ToolbarTablaProps) => {
   const classes = useToolbarStyles();
+
+  const handleAgregar = () => {
+    onAgregar && onAgregar();
+  };
 
   return (
     <Toolbar
@@ -28,26 +37,26 @@ export const ToolbarTabla = ({
         [classes.highlight]: numSelected > 0,
       })}
     >
-      {numSelected > 0 ? (
-        <Typography
-          className={classes.title}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          className={classes.title}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          {titulo}
-        </Typography>
-      )}
-      {numSelected > 0 ? (
+      <Typography
+        className={classes.title}
+        variant="h6"
+        id="tableTitle"
+        component="div"
+      >
+        {titulo}
+      </Typography>
+
+      <Button
+        variant="contained"
+        color="primary"
+        className={classes.button}
+        startIcon={<Add />}
+        onClick={handleAgregar}
+      >
+        Agregar
+      </Button>
+
+      {/* {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
             <Delete />
@@ -59,7 +68,7 @@ export const ToolbarTabla = ({
             <FilterList />
           </IconButton>
         </Tooltip>
-      )}
+      )} */}
     </Toolbar>
   );
 };
@@ -82,6 +91,9 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
           },
     title: {
       flex: "1 1 100%",
+    },
+    button: {
+      margin: theme.spacing(1),
     },
   })
 );

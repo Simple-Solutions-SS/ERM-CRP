@@ -4,7 +4,7 @@ import Table from "@material-ui/core/Table";
 import TableContainer from "@material-ui/core/TableContainer";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from "@material-ui/core/Paper";
-import { CeldaEncabezado, EncabezadoTabla } from "../../atomos/EncabezadoTabla";
+import { EncabezadoTabla } from "../../atomos/EncabezadoTabla";
 import { ToolbarTabla } from "../../atomos/ToolbarTabla";
 import { CuerpoTabla } from "../../atomos/CuerpoTabla";
 import { capitalize } from "@material-ui/core";
@@ -42,9 +42,15 @@ export interface TablaProps {
   titulo?: string;
   datos?: any[];
   campos?: EtiquetasCeldas[];
+  onAgregar?: Function;
 }
 
-const Tabla: React.FC<TablaProps> = ({ titulo, datos = [], campos = [] }) => {
+const Tabla: React.FC<TablaProps> = ({
+  titulo,
+  datos = [],
+  campos = [],
+  onAgregar,
+}) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<string>("");
@@ -91,7 +97,11 @@ const Tabla: React.FC<TablaProps> = ({ titulo, datos = [], campos = [] }) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <ToolbarTabla numSelected={selected.length} titulo={titulo} />
+        <ToolbarTabla
+          onAgregar={onAgregar}
+          numSelected={selected.length}
+          titulo={titulo}
+        />
         <TableContainer>
           <Table
             className={classes.table}

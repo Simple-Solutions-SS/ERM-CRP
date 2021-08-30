@@ -94,6 +94,7 @@ export function EncabezadoTabla({
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell>Acciones</TableCell>
       </TableRow>
     </TableHead>
   );

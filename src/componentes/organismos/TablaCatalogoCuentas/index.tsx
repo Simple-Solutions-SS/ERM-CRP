@@ -1,32 +1,31 @@
 import React from "react";
 import Tabla from "../../moleculas/Tabla/Tabla";
 import { Button, CircularProgress } from "@material-ui/core";
-import { useModal } from "../../../contextos/modal-context";
+import { DataType, useModal } from "../../../contextos/modal-context";
 import useAccounts from "../../../hooks/useAccounts";
 
 export interface EtiquetasCeldas {
   label: string;
   campo: string;
+  subCampo?: string;
 }
 
 const etiquetasCeldas: EtiquetasCeldas[] = [
   { label: "Cuenta", campo: "AccountNumber" },
   { label: "Descripción", campo: "Description" },
-  { label: "Tipo Detallado", campo: "Cuenta" },
-  { label: "Tipo", campo: "BalanceType" },
-  { label: "Balance", campo: "Balance" },
+  { label: "Uso Restringido", campo: "IsRestricted" },
+  { label: "Tipo Detallado", campo: "AccountingType", subCampo: "Name" },
+  { label: "Tipo", campo: "FinancialStatement", subCampo: "Name" },
+  { label: "Tipo de Cambio", campo: "TypeExchange", subCampo: "Name" },
 ];
 
 export const TablaCatalogoCuentas: React.FC = () => {
-  const { loading, data, error, refetch } = useAccounts();
+  const { loading, data, error } = useAccounts();
 
-  const { setOnSubmit, setOpenModal } = useModal();
+  const { setOpenModal, setDataType } = useModal();
 
   if (error) {
     console.error(error);
-  }
-
-  if (error) {
     return <p>Ooops, datos no disponibles en este momento.</p>;
   }
 
@@ -34,7 +33,7 @@ export const TablaCatalogoCuentas: React.FC = () => {
     return <CircularProgress />;
   }
   const handleButtonClick = () => {
-    setOnSubmit(refetch);
+    setDataType(DataType.Cuentas);
     setOpenModal(true);
   };
 
@@ -46,6 +45,7 @@ export const TablaCatalogoCuentas: React.FC = () => {
             titulo="Catálogo de Cuentas"
             datos={data["acct_Account"]}
             campos={etiquetasCeldas}
+            onAgregar={handleButtonClick}
           />
           <Button
             variant="contained"

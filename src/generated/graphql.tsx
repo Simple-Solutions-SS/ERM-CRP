@@ -4029,12 +4029,12 @@ export type FetchAccountTypesQuery = { __typename?: 'query_root', acct_Accountin
 export type FetchAccountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchAccountsQuery = { __typename?: 'query_root', acct_Account: Array<{ __typename?: 'acct_Account', AccountName?: Maybe<string>, Description?: Maybe<string>, AccountNumber: string, ClientAccount?: Maybe<string>, BankName?: Maybe<string>, IdCurrency?: Maybe<number>, IdStatus?: Maybe<number>, Note?: Maybe<string>, IdAccountingType?: Maybe<number>, IdFinancialStatement?: Maybe<number>, Balance?: Maybe<number>, IdMasterAccount?: Maybe<number>, BalanceType?: Maybe<string>, UseCostCenter?: Maybe<number> }> };
+export type FetchAccountsQuery = { __typename?: 'query_root', acct_Account: Array<{ __typename?: 'acct_Account', IdAccount: number, AccountNumber: string, Description?: Maybe<string>, IsRestricted?: Maybe<string>, IdCreditType?: Maybe<number>, IdCurrency?: Maybe<number>, IdStatus?: Maybe<number>, IdTypeExchange?: Maybe<number>, Note?: Maybe<string>, UseCostCenter?: Maybe<number>, IdFinancialStatement?: Maybe<number>, IdAccountingType?: Maybe<number>, IdMasterAccount?: Maybe<number>, Balance?: Maybe<number>, BalanceType?: Maybe<string>, BankName?: Maybe<string>, ClientAccount?: Maybe<string>, AccountName?: Maybe<string>, AccountingType?: Maybe<{ __typename?: 'acct_AccountingType', Name?: Maybe<string>, IdAccountingType: number }>, FinancialStatement?: Maybe<{ __typename?: 'acct_FinancialStatement', Name?: Maybe<string>, IdFinancialStatement: number }>, TypeExchange?: Maybe<{ __typename?: 'acct_TypeExchange', Name: string, IdTypeExchange: number }> }> };
 
 export type FetchJournalEntriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FetchJournalEntriesQuery = { __typename?: 'query_root', acct_JournalEntry: Array<{ __typename?: 'acct_JournalEntry', IdReference?: Maybe<number>, Amount?: Maybe<number>, Account?: Maybe<{ __typename?: 'acct_Account', AccountNumber: string, Description?: Maybe<string> }> }> };
+export type FetchJournalEntriesQuery = { __typename?: 'query_root', acct_JournalEntry: Array<{ __typename?: 'acct_JournalEntry', IdJournalEntry: number, IdReference?: Maybe<number>, Amount?: Maybe<number>, Account?: Maybe<{ __typename?: 'acct_Account', AccountNumber: string, Description?: Maybe<string> }> }> };
 
 export type FetchConversionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4095,20 +4095,36 @@ export type FetchAccountTypesQueryResult = Apollo.QueryResult<FetchAccountTypesQ
 export const FetchAccountsDocument = gql`
     query FetchAccounts {
   acct_Account {
-    AccountName
-    Description
+    IdAccount
     AccountNumber
-    ClientAccount
-    BankName
+    Description
+    IsRestricted
+    AccountingType {
+      Name
+      IdAccountingType
+    }
+    FinancialStatement {
+      Name
+      IdFinancialStatement
+    }
+    IdCreditType
     IdCurrency
     IdStatus
+    IdTypeExchange
     Note
-    IdAccountingType
-    IdFinancialStatement
-    Balance
-    IdMasterAccount
-    BalanceType
+    TypeExchange {
+      Name
+      IdTypeExchange
+    }
     UseCostCenter
+    IdFinancialStatement
+    IdAccountingType
+    IdMasterAccount
+    Balance
+    BalanceType
+    BankName
+    ClientAccount
+    AccountName
   }
 }
     `;
@@ -4142,6 +4158,7 @@ export type FetchAccountsQueryResult = Apollo.QueryResult<FetchAccountsQuery, Fe
 export const FetchJournalEntriesDocument = gql`
     query FetchJournalEntries {
   acct_JournalEntry {
+    IdJournalEntry
     Account {
       AccountNumber
       Description

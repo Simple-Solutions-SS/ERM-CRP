@@ -4,6 +4,7 @@ import {} from "../generated/graphql";
 export const QUERY_ASIENTOS = gql`
   query FetchJournalEntries {
     acct_JournalEntry {
+      IdJournalEntry
       Account {
         AccountNumber
         Description
