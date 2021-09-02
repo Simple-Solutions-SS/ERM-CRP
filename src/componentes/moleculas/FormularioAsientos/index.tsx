@@ -29,25 +29,12 @@ import { createEncodedString } from "../../../utils/strings";
 import { getDefaultValues } from "@apollo/client/utilities";
 
 export interface AsientoCreationInput {
-  AccountName: string;
-  Description: string;
-  AccountNumber: string;
-  ClientAccount: string;
-  BankName: string;
+  IdDocument: number;
   IdCurrency: number;
-  IdStatus: number;
-  Note: string;
-  // IdUser: number;
-  IdAccountingType: number;
-  IdFinancialStatement: number;
-  Balance: number;
-  IdMasterAccount: number;
-  BalanceType: number;
-  UseCostCenter: number;
-  TypeExchange: number;
-  IdTypeExchange: number;
-  IsRestricted: string;
-  IdCreditType: number;
+  IdAccount: number;
+  TransactionCode: number;
+  IdTransactionType: number;
+  JournalNumber: number;
 }
 
 const usoRestringido = [
@@ -83,13 +70,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const FormularioCuenta = () => {
+export const FormularioAsientos = () => {
   const classes = useStyles();
   const { setOpenModal, getDefaultValues } = useModal();
   const { setMessage, setSeverity, setOpenSnackBar } = useSnackbar();
 
   const { refetch } = useAccounts();
   const { tipoCambio } = useTipoCambio();
+  const { data: accounts, loading: loadingAccounts } = useAccounts();
   const { data: accountTypes, loading: loadingAccountTypes } =
     useAccountTypes();
   const { data: conversionTypes, loading: loadingConversionTypes } =
@@ -98,34 +86,32 @@ export const FormularioCuenta = () => {
   const { data: financialStatements, loading: loadingFinancialStatements } =
     useFinancialStatements();
 
-  const { data: creditTypes, loading: loadingCreditTypes } = useCreditTypes();
-
   const { data: currencyTypes, loading: loadingCurrencies } = useCurrencies();
 
   const handleSubmit = async (value: AsientoCreationInput) => {
     try {
-      console.log(
-        `https://simplesolutionscr.com/webservices/selca/service.php?who=insert_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1&${createEncodedString(
-          value
-        )}`
-      );
-      const response = await fetch(
-        `https://simplesolutionscr.com/webservices/selca/service.php?who=insert_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1&${createEncodedString(
-          value
-        )}`,
-        {
-          mode: "no-cors",
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      setMessage("Se creó la cuenta exitosamente.");
-      setSeverity("success");
-      setOpenSnackBar(true);
-      setOpenModal(false);
-      refetch();
+      // console.log(
+      //   `https://simplesolutionscr.com/webservices/selca/service.php?who=insert_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1&${createEncodedString(
+      //     value
+      //   )}`
+      // );
+      // const response = await fetch(
+      //   `https://simplesolutionscr.com/webservices/selca/service.php?who=insert_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1&${createEncodedString(
+      //     value
+      //   )}`,
+      //   {
+      //     mode: "no-cors",
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/x-www-form-urlencoded",
+      //     },
+      //   }
+      // );
+      // setMessage("Se creó la cuenta exitosamente.");
+      // setSeverity("success");
+      // setOpenSnackBar(true);
+      // setOpenModal(false);
+      // refetch();
     } catch (error) {
       console.error(error);
       setMessage("Oops, tuvimos problemas para crear la cuenta.");
@@ -157,255 +143,6 @@ export const FormularioCuenta = () => {
           }}
           onSubmit={handleSubmit}
         >
-          <FieldsContainer>
-            <Typography variant="h4" color="primary">
-              Ingrese los datos de la cuenta:
-            </Typography>
-            <TextField
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              required
-              margin="normal"
-              variant="outlined"
-              label="Nombre Cuenta"
-              name="AccountName"
-              type="text"
-              inputMode="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.AccountName}
-            />
-            <TextField
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              required
-              margin="normal"
-              variant="outlined"
-              label="Número de cuenta"
-              name="AccountNumber"
-              type="text"
-              inputMode="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.AccountNumber}
-            />
-            <TextField
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              required
-              margin="normal"
-              variant="outlined"
-              label="Descripción"
-              name="Description"
-              type="text"
-              inputMode="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.Description}
-            />
-            <TextField
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              required
-              margin="normal"
-              variant="outlined"
-              label="Cuenta IBAN"
-              name="ClientAccount"
-              type="text"
-              inputMode="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.ClientAccount}
-            />
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel shrink id="label-tipo-cuenta">
-                Tipo de Cuenta
-              </InputLabel>
-              <Select
-                variant="outlined"
-                labelId="label-tipo-cuenta"
-                id="select-tipo-cuenta"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                displayEmpty
-                name="IdFinancialStatement"
-                value={values.IdFinancialStatement}
-                className={classes.selectEmpty}
-              >
-                {financialStatements?.acct_FinancialStatement &&
-                  financialStatements.acct_FinancialStatement.map((item) => (
-                    <MenuItem value={item.IdFinancialStatement}>
-                      {capitalize(item.Name ?? "")}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-
-            <FlexRow>
-              <FormControl fullWidth className={classes.rowFormControl}>
-                <InputLabel shrink id="label-tipo-detallado">
-                  Tipo Detallado
-                </InputLabel>
-                <Select
-                  variant="outlined"
-                  labelId="label-tipo-detallado"
-                  id="select-tipo-detallado"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  displayEmpty
-                  name="IdAccountingType"
-                  value={values.IdAccountingType}
-                  className={classes.selectEmpty}
-                >
-                  {accountTypes?.acct_AccountingType &&
-                    accountTypes.acct_AccountingType.map((item) => (
-                      <MenuItem value={item.IdAccountingType}>
-                        {capitalize(item.Name ?? "")}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </FormControl>
-              <FormControl fullWidth className={classes.rowFormControl}>
-                <InputLabel shrink id="label-uso-restringido">
-                  Uso Restringido
-                </InputLabel>
-                <Select
-                  variant="outlined"
-                  labelId="label-uso-restringido"
-                  id="select-uso-restringido"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  displayEmpty
-                  name="IsRestricted"
-                  value={values.IsRestricted}
-                  className={classes.selectEmpty}
-                >
-                  {usoRestringido.map((item) => (
-                    <MenuItem value={item.value}>
-                      {capitalize(item.label)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </FlexRow>
-
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel shrink id="label-tipo-conversion">
-                Conversión
-              </InputLabel>
-              <Select
-                name="IdTypeExchange"
-                variant="outlined"
-                labelId="label-tipo-conversion"
-                id="select-tipo-conversion"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                displayEmpty
-                value={values.IdTypeExchange}
-                className={classes.selectEmpty}
-              >
-                {conversionTypes?.acct_TypeExchange &&
-                  conversionTypes?.acct_TypeExchange.map((item) => (
-                    <MenuItem value={item.IdTypeExchange}>
-                      {capitalize(item.Name ?? "")}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-
-            <TextField
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              required
-              margin="normal"
-              variant="outlined"
-              label="Nombre del Banco"
-              name="BankName"
-              type="text"
-              inputMode="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.BankName}
-            />
-
-            <TextField
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              required
-              margin="normal"
-              variant="outlined"
-              label="Tipo de Cambio"
-              name="TypeExchange"
-              type="text"
-              inputMode="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.TypeExchange}
-            />
-
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel shrink id="label-tipo-moneda">
-                Moneda
-              </InputLabel>
-              <Select
-                name="IdCurrency"
-                variant="outlined"
-                labelId="label-tipo-moneda"
-                id="select-tipo-conversion"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                displayEmpty
-                className={classes.selectEmpty}
-                value={values.IdCurrency}
-              >
-                {currencyTypes?.acct_Currency &&
-                  currencyTypes?.acct_Currency.map((item) => (
-                    <MenuItem value={item.IdCurrency}>
-                      {capitalize(item.Name ?? "")}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel shrink id="label-tipo-credito">
-                Tipo de Crédito
-              </InputLabel>
-              <Select
-                name="IdCreditType"
-                variant="outlined"
-                labelId="label-tipo-credito"
-                id="select-tipo-credito"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                displayEmpty
-                className={classes.selectEmpty}
-                value={values.IdCreditType}
-              >
-                {creditTypes?.acct_CreditType &&
-                  creditTypes?.acct_CreditType.map((item) => (
-                    <MenuItem value={item.IdCreditType}>
-                      {capitalize(item.Name ?? "")}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-
-            <TextField
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              required
-              margin="normal"
-              variant="outlined"
-              label="Notas"
-              name="Note"
-              type="text"
-              inputMode="text"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.Note}
-            />
-          </FieldsContainer>
           <ButtonContainer>
             <Button
               variant="contained"
@@ -413,7 +150,7 @@ export const FormularioCuenta = () => {
               type="submit"
               disabled={isSubmitting}
             >
-              Crear Cuenta
+              Crear Asiento
             </Button>
           </ButtonContainer>
         </form>

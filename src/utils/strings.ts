@@ -11,5 +11,5 @@ export const createEncodedString = (value: AccountCreationInput) => {
     stringArray.push(`${key}=${value[key]}`);
   }
 
-  return stringArray.join("&");
+  return encodeURI(stringArray.join("&"));
 };

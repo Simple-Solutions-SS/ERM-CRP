@@ -22,7 +22,7 @@ const etiquetasCeldas: EtiquetasCeldas[] = [
 export const TablaCatalogoCuentas: React.FC = () => {
   const { loading, data, error } = useAccounts();
 
-  const { setOpenModal, setDataType } = useModal();
+  const { setOpenModal, setDataType, setSelectedItem } = useModal();
 
   if (error) {
     console.error(error);
@@ -33,6 +33,7 @@ export const TablaCatalogoCuentas: React.FC = () => {
     return <CircularProgress />;
   }
   const handleButtonClick = () => {
+    setSelectedItem(null);
     setDataType(DataType.Cuentas);
     setOpenModal(true);
   };
@@ -40,21 +41,12 @@ export const TablaCatalogoCuentas: React.FC = () => {
   return (
     <div>
       {data && (
-        <>
-          <Tabla
-            titulo="Catálogo de Cuentas"
-            datos={data["acct_Account"]}
-            campos={etiquetasCeldas}
-            onAgregar={handleButtonClick}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleButtonClick}
-          >
-            Agregar Cuenta
-          </Button>
-        </>
+        <Tabla
+          titulo="Catálogo de Cuentas"
+          datos={data["acct_Account"]}
+          campos={etiquetasCeldas}
+          onAgregar={handleButtonClick}
+        />
       )}
     </div>
   );

@@ -14,6 +14,7 @@ import {
   InputLabel,
   MenuItem,
   capitalize,
+  CircularProgress,
 } from "@material-ui/core";
 import useAccountTypes from "../../../hooks/useAccountTypes";
 import useConversions from "../../../hooks/useConversions";
@@ -27,6 +28,7 @@ import { useSnackbar } from "../../../contextos/use-snackback";
 import { useModal } from "../../../contextos/modal-context";
 import { createEncodedString } from "../../../utils/strings";
 import { Acct_Account } from "../../../generated/graphql";
+import { CreditTypeSelect } from "../CreditTypeSelect";
 
 export interface AccountCreationInput {
   AccountName: string;
@@ -86,8 +88,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const FormularioCuenta = () => {
   const classes = useStyles();
-  const { setOpenModal, getDefaultValues, operacion, selectedItem } =
-    useModal();
+  const {
+    setOpenModal,
+    getDefaultValues,
+    operacion,
+    selectedItem,
+    setSelectedItem,
+  } = useModal();
   const { setMessage, setSeverity, setOpenSnackBar } = useSnackbar();
 
   const { refetch } = useAccounts();
@@ -133,6 +140,7 @@ export const FormularioCuenta = () => {
           },
         }
       );
+      setSelectedItem(null);
       mostrarExitoso();
     } catch (error) {
       console.error(error);
@@ -143,12 +151,12 @@ export const FormularioCuenta = () => {
   const handleEditCuenta = async (value: AccountCreationInput) => {
     try {
       console.log(
-        `https://simplesolutionscr.com/webservices/selca/service.php?who=update_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1${createEncodedString(
+        `https://simplesolutionscr.com/webservices/selca/service.php?who=update_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1&${createEncodedString(
           value
         )}`
       );
       const response = await fetch(
-        `https://simplesolutionscr.com/webservices/selca/service.php?who=update_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1${createEncodedString(
+        `https://simplesolutionscr.com/webservices/selca/service.php?who=update_account&api_key=wqE6Uf9aqRa9QPw9ZMrtvc9lkyTwFEqe&IdUser=1&${createEncodedString(
           value
         )}`,
         {
@@ -160,6 +168,7 @@ export const FormularioCuenta = () => {
         }
       );
       console.log(response);
+      setSelectedItem(null);
       mostrarExitoso();
     } catch (error) {
       console.error(error);
@@ -193,7 +202,9 @@ export const FormularioCuenta = () => {
           selectedCuenta.FinancialStatement?.IdFinancialStatement ?? 0,
         Balance: selectedCuenta.Balance ?? 0,
         IdMasterAccount: selectedCuenta.IdMasterAccount ?? 0,
-        BalanceType: parseInt(selectedCuenta.BalanceType ?? "0"),
+        BalanceType: isNaN(parseInt(selectedCuenta.BalanceType || "0"))
+          ? 1
+          : parseInt(selectedCuenta.BalanceType || "0"),
         UseCostCenter: selectedCuenta.UseCostCenter ?? 0,
         TypeExchange: 0,
         IdTypeExchange: selectedCuenta.IdTypeExchange ?? 0,
@@ -202,8 +213,6 @@ export const FormularioCuenta = () => {
         IdAccount: selectedCuenta.IdAccount ?? 0,
       }
     : undefined;
-
-  console.log(selectedItem);
 
   const initialValues =
     initialAccount || (getDefaultValues() as AccountCreationInput);
@@ -307,12 +316,15 @@ export const FormularioCuenta = () => {
                 value={values.IdFinancialStatement}
                 className={classes.selectEmpty}
               >
-                {financialStatements?.acct_FinancialStatement &&
+                {financialStatements?.acct_FinancialStatement ? (
                   financialStatements.acct_FinancialStatement.map((item) => (
                     <MenuItem value={item.IdFinancialStatement}>
                       {capitalize(item.Name ?? "")}
                     </MenuItem>
-                  ))}
+                  ))
+                ) : (
+                  <CircularProgress />
+                )}
               </Select>
             </FormControl>
 
@@ -442,29 +454,11 @@ export const FormularioCuenta = () => {
               </Select>
             </FormControl>
 
-            <FormControl fullWidth className={classes.formControl}>
-              <InputLabel shrink id="label-tipo-credito">
-                Tipo de Crédito
-              </InputLabel>
-              <Select
-                name="IdCreditType"
-                variant="outlined"
-                labelId="label-tipo-credito"
-                id="select-tipo-credito"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                displayEmpty
-                className={classes.selectEmpty}
-                value={values.IdCreditType}
-              >
-                {creditTypes?.acct_CreditType &&
-                  creditTypes?.acct_CreditType.map((item) => (
-                    <MenuItem value={item.IdCreditType}>
-                      {capitalize(item.Name ?? "")}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
+            <CreditTypeSelect
+              value={values.IdCreditType}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+            />
 
             <TextField
               fullWidth

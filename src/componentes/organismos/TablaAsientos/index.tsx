@@ -16,7 +16,8 @@ const etiquetasCeldas: EtiquetasCeldas[] = [
 export const TablaAsientos: React.FC = () => {
   const { loading, data, error } = useAsientos();
 
-  const { setOpenModal, setDataType, setOperacion } = useModal();
+  const { setOpenModal, setDataType, setOperacion, setSelectedItem } =
+    useModal();
 
   if (error) {
     console.error(error);
@@ -29,6 +30,7 @@ export const TablaAsientos: React.FC = () => {
 
   const handleButtonClick = () => {
     setDataType(DataType.Asientos);
+    setSelectedItem(null);
     setOperacion("Crear");
     setOpenModal(true);
   };
@@ -43,13 +45,6 @@ export const TablaAsientos: React.FC = () => {
             campos={etiquetasCeldas}
             onAgregar={handleButtonClick}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleButtonClick}
-          >
-            Agregar Cuenta
-          </Button>
         </>
       )}
     </div>
