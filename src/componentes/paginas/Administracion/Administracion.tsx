@@ -3,6 +3,7 @@ import Tabla from "../../moleculas/Tabla/Tabla";
 import { AppLayout } from "../../organismos/AppLayout/AppLayout";
 
 const Administracion = () => {
+  console.log("hola");
   return (
     <AppLayout>
       <h1>Administracion</h1>
